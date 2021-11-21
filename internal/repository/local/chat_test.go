@@ -36,11 +36,11 @@ func TestChatRepository_Add(t *testing.T) {
 	}
 }
 
-func TestChatRepository_Values(t *testing.T) {
+func TestChatRepository_Chats(t *testing.T) {
 	r := local.NewChatRepository()
 	_ = r.Add(context.TODO(), "id")
 	expected := "id"
-	values := r.Values(context.TODO())
+	values := r.Chats(context.TODO())
 	if values[0] != expected {
 		t.Errorf("Values not equals:\n- expected: %s\n- actual: %s", expected, values[0])
 	}
@@ -48,7 +48,7 @@ func TestChatRepository_Values(t *testing.T) {
 
 func TestChatRepository_ValuesEmpty(t *testing.T) {
 	r := local.NewChatRepository()
-	values := r.Values(context.TODO())
+	values := r.Chats(context.TODO())
 	if len(values) != 0 {
 		t.Errorf("Values not equals:\n- expected: 0\n- actual: %d", len(values))
 	}
@@ -123,12 +123,12 @@ func BenchmarkChatRepository_Add(b *testing.B) {
 	})
 }
 
-func BenchmarkChatRepository_Values(b *testing.B) {
+func BenchmarkChatRepository_Chats(b *testing.B) {
 	r := local.NewChatRepository()
 	_ = r.Add(context.TODO(), "key")
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
-			_ = r.Values(context.TODO())
+			_ = r.Chats(context.TODO())
 		}
 	})
 }

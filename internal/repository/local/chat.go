@@ -23,7 +23,7 @@ func (r ChatRepository) Add(_ context.Context, id string) error {
 	return r.db.Set(id, id)
 }
 
-func (r ChatRepository) Values(_ context.Context) []string {
+func (r ChatRepository) Chats(_ context.Context) []string {
 	list := r.db.Values()
 	r.mu.Lock()
 	defer r.mu.Unlock()
