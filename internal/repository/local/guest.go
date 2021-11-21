@@ -22,7 +22,7 @@ func NewGuestRepository() GuestRepository {
 }
 
 func (r GuestRepository) Create(_ context.Context, g entity.Guest) error {
-	return r.db.Set(g.Token.String(), g)
+	return r.db.Set(string(g.Token), g)
 }
 
 func (r GuestRepository) Find(_ context.Context, token string) (entity.Guest, bool) {
