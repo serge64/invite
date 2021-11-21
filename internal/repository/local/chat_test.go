@@ -46,7 +46,7 @@ func TestChatRepository_Chats(t *testing.T) {
 	}
 }
 
-func TestChatRepository_ValuesEmpty(t *testing.T) {
+func TestChatRepository_ChatsEmpty(t *testing.T) {
 	r := local.NewChatRepository()
 	values := r.Chats(context.TODO())
 	if len(values) != 0 {

@@ -24,11 +24,10 @@ func (r ChatRepository) Add(_ context.Context, id string) error {
 }
 
 func (r ChatRepository) Chats(_ context.Context) []string {
-	list := r.db.Values()
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	r.buf = r.buf[:0]
-	for _, v := range list {
+	for _, v := range r.db.Values() {
 		r.buf = append(r.buf, v.(string))
 	}
 	return r.buf
