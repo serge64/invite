@@ -140,7 +140,7 @@ func TestLocalStorage_ValuesEmpty(t *testing.T) {
 	}
 }
 
-func BenchmarkLocalStorage_SetGet(b *testing.B) {
+func BenchmarkLocalStorage_Set(b *testing.B) {
 	db := local.NewLocalStorage()
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
@@ -149,7 +149,7 @@ func BenchmarkLocalStorage_SetGet(b *testing.B) {
 	})
 }
 
-func BenchmarkLocalStorage_Gett(b *testing.B) {
+func BenchmarkLocalStorage_Get(b *testing.B) {
 	db := local.NewLocalStorage()
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
