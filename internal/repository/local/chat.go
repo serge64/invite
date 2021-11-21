@@ -1,6 +1,9 @@
 package local
 
-import "sync"
+import (
+	"context"
+	"sync"
+)
 
 type ChatRepository struct {
 	db  LocalStorage
@@ -16,11 +19,11 @@ func NewChatRepository() ChatRepository {
 	}
 }
 
-func (r ChatRepository) Add(id string) error {
+func (r ChatRepository) Add(_ context.Context, id string) error {
 	return r.db.Set(id, id)
 }
 
-func (r ChatRepository) Values() []string {
+func (r ChatRepository) Values(_ context.Context) []string {
 	list := r.db.Values()
 	r.mu.Lock()
 	defer r.mu.Unlock()
@@ -31,11 +34,11 @@ func (r ChatRepository) Values() []string {
 	return r.buf
 }
 
-func (r ChatRepository) Exists(id string) bool {
+func (r ChatRepository) Exists(_ context.Context, id string) bool {
 	_, ok := r.db.Get(id)
 	return ok
 }
 
-func (r ChatRepository) Delete(id string) error {
+func (r ChatRepository) Delete(_ context.Context, id string) error {
 	return r.db.Delete(id)
 }
