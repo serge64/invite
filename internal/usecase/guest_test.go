@@ -1,18 +1,18 @@
-package entity_test
+package usecase_test
 
 import (
-	"fmt"
 	"log"
 	"strings"
 	"testing"
 
 	"github.com/serge64/invite/internal/entity"
+	"github.com/serge64/invite/internal/usecase"
 )
 
-func TestGuest_ToString(t *testing.T) {
+func TestGuest_GuestToMessage(t *testing.T) {
 	token := entity.GenerateToken()
 	url := "http://localhost/invite/"
-	link := fmt.Sprintf("[%s%s](%s%s)", url, token, url, token)
+	link := url + string(token)
 
 	testcases := []struct {
 		name     string
@@ -29,7 +29,7 @@ func TestGuest_ToString(t *testing.T) {
 				Choice1: "водка",
 				Choice2: "водка",
 			},
-			expected: expectedString(
+			expected: ExpectedString(
 				"токен", string(token),
 				"ссылка", link,
 				"гость", "Гость1 и Гость2",
@@ -48,7 +48,7 @@ func TestGuest_ToString(t *testing.T) {
 				Status:     entity.StatusNegative,
 				Choice1:    "водка",
 			},
-			expected: expectedString(
+			expected: ExpectedString(
 				"токен", string(token),
 				"ссылка", link,
 				"гость", "Гость1",
@@ -65,7 +65,7 @@ func TestGuest_ToString(t *testing.T) {
 				SingleMode: true,
 				Name1:      "Гость1",
 			},
-			expected: expectedString(
+			expected: ExpectedString(
 				"токен", string(token),
 				"ссылка", link,
 				"гость", "Гость1",
@@ -78,7 +78,7 @@ func TestGuest_ToString(t *testing.T) {
 
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
-			text := tc.guest.ToString(url)
+			text := usecase.GuestToMessage(tc.guest, url)
 			if tc.expected != text {
 				t.Errorf("Values not equals:\n- expected: %s\n- actual: %s", tc.expected, text)
 			}
@@ -86,7 +86,7 @@ func TestGuest_ToString(t *testing.T) {
 	}
 }
 
-func expectedString(opts ...string) string {
+func ExpectedString(opts ...string) string {
 	switch {
 	case len(opts) == 0:
 		return ""
@@ -115,4 +115,20 @@ func expectedString(opts ...string) string {
 	}
 
 	return buf.String()
+}
+
+func BenchmarkGuest_GuestToString(b *testing.B) {
+	g := entity.Guest{
+		Token:      entity.GenerateToken(),
+		SingleMode: true,
+		Name1:      "Гость1",
+		Name2:      "Гость2",
+		Status:     entity.StatusNegative,
+		Choice1:    "водка",
+		Choice2:    "водка",
+	}
+
+	for i := 0; i < b.N; i++ {
+		_ = usecase.GuestToMessage(g, "localhost")
+	}
 }
