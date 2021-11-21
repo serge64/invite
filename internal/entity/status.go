@@ -6,10 +6,6 @@ const (
 	StatusNoResponded Status = iota
 	StatusPositive
 	StatusNegative
-
-	statusNoRespondedStr string = "не определен"
-	statusPositiveStr    string = "приду"
-	statusNegativeStr    string = "не приду"
 )
 
 func ValidateStatus(value string) bool {
@@ -21,15 +17,4 @@ func ConvertToStatus(value string) Status {
 		return StatusPositive
 	}
 	return StatusNegative
-}
-
-func (s Status) String() string {
-	switch s {
-	case StatusPositive:
-		return statusPositiveStr
-	case StatusNegative:
-		return statusNegativeStr
-	default:
-		return statusNoRespondedStr
-	}
 }
