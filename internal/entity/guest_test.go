@@ -10,10 +10,9 @@ import (
 )
 
 func TestGuest_ToString(t *testing.T) {
-	token := entity.NewToken()
-	stoken := token.String()
+	token := entity.GenerateToken()
 	url := "http://localhost/invite/"
-	link := fmt.Sprintf("[%s%s](%s%s)", url, stoken, url, stoken)
+	link := fmt.Sprintf("[%s%s](%s%s)", url, token, url, token)
 
 	testcases := []struct {
 		name     string
@@ -31,7 +30,7 @@ func TestGuest_ToString(t *testing.T) {
 				Choice2: "водка",
 			},
 			expected: expectedString(
-				"токен", stoken,
+				"токен", string(token),
 				"ссылка", link,
 				"гость", "Гость1 и Гость2",
 				"статус", "приду",
@@ -50,7 +49,7 @@ func TestGuest_ToString(t *testing.T) {
 				Choice1:    "водка",
 			},
 			expected: expectedString(
-				"токен", stoken,
+				"токен", string(token),
 				"ссылка", link,
 				"гость", "Гость1",
 				"статус", "не приду",
@@ -67,7 +66,7 @@ func TestGuest_ToString(t *testing.T) {
 				Name1:      "Гость1",
 			},
 			expected: expectedString(
-				"токен", stoken,
+				"токен", string(token),
 				"ссылка", link,
 				"гость", "Гость1",
 				"статус", "не определен",

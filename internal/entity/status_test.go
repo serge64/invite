@@ -6,7 +6,7 @@ import (
 	"github.com/serge64/invite/internal/entity"
 )
 
-func TestStatus_StatusValid(t *testing.T) {
+func TestStatus_ValidateStatus(t *testing.T) {
 	testcases := []struct {
 		name     string
 		status   string
@@ -34,7 +34,7 @@ func TestStatus_StatusValid(t *testing.T) {
 
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
-			b := entity.StatusValid(tc.status)
+			b := entity.ValidateStatus(tc.status)
 			if tc.expected != b {
 				t.Errorf("Expected value to be '%t' but got '%t'", tc.expected, b)
 			}

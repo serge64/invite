@@ -12,7 +12,7 @@ const (
 	statusNegativeStr    string = "не приду"
 )
 
-func StatusValid(value string) bool {
+func ValidateStatus(value string) bool {
 	return value == "true" || value == "false"
 }
 

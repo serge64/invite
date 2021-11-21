@@ -6,7 +6,14 @@ import (
 	"github.com/serge64/invite/internal/entity"
 )
 
-func TestToken_IsValid(t *testing.T) {
+func TestToken_GenerateToken(t *testing.T) {
+	token := entity.GenerateToken()
+	if len(token) != entity.CodeSize {
+		t.Errorf("Expected value to be %d but got %d", entity.CodeSize, len(token))
+	}
+}
+
+func TestToken_ValidateToken(t *testing.T) {
 	testcases := []struct {
 		name  string
 		token entity.Token
@@ -14,7 +21,7 @@ func TestToken_IsValid(t *testing.T) {
 	}{
 		{
 			name:  "valid",
-			token: entity.NewToken(),
+			token: entity.GenerateToken(),
 			valid: true,
 		},
 		{
@@ -33,7 +40,7 @@ func TestToken_IsValid(t *testing.T) {
 
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
-			ok := tc.token.IsValid()
+			ok := entity.ValidateToken(tc.token)
 			if tc.valid {
 				if !ok {
 					t.Errorf("Expected value to be 'true' but got 'false'")
@@ -47,15 +54,15 @@ func TestToken_IsValid(t *testing.T) {
 	}
 }
 
-func TestToken_String(t *testing.T) {
-	token := entity.NewToken()
-	if token.String() == "" {
-		t.Error("Expected value to be no empty but got empty")
+func BenchmarkToken_GenerateToken(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_ = entity.GenerateToken()
 	}
 }
 
-func BenchmarkToken(b *testing.B) {
+func BenchmarkToken_ValidateToken(b *testing.B) {
+	t := entity.GenerateToken()
 	for i := 0; i < b.N; i++ {
-		_ = entity.NewToken().IsValid()
+		_ = entity.ValidateToken(t)
 	}
 }

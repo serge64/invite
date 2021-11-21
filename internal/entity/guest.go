@@ -18,7 +18,7 @@ type Guest struct {
 func (g Guest) ToString(url string) string {
 	text := make([]string, 0, 7)
 	builder := strings.Builder{}
-	token := g.Token.String()
+	token := string(g.Token)
 
 	builder.Grow(len(url) + CodeSize)
 

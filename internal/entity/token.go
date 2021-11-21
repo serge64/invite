@@ -6,7 +6,7 @@ import (
 	"sync"
 )
 
-type Token []byte
+type Token string
 
 const (
 	CodeSize   int    = 16
@@ -23,7 +23,7 @@ func makeBytes() {
 	bytes = make([]byte, CodeSize)
 }
 
-func NewToken() Token {
+func GenerateToken() Token {
 	once.Do(makeBytes)
 	_, _ = rand.Read(bytes)
 	for k, v := range bytes {
@@ -32,18 +32,14 @@ func NewToken() Token {
 	return Token(bytes)
 }
 
-func (t Token) String() string {
-	return string(t)
-}
-
-func (t Token) IsValid() bool {
+func ValidateToken(t Token) bool {
 	if len(t) != CodeSize {
 		return false
 	}
 	return match(t)
 }
 
-func match(value []byte) bool {
+func match(value Token) bool {
 	for _, v := range value {
 		if !bsearch(int(v)) {
 			return false
