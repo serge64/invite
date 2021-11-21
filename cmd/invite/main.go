@@ -1,13 +1,13 @@
 package main
 
-import "log"
+import (
+	"log"
+
+	"github.com/serge64/invite/internal/app"
+)
 
 func main() {
-	if err := run(); err != nil {
+	if err := app.Start(); err != nil {
 		log.Fatal(err)
 	}
-}
-
-func run() error {
-	return nil
 }
